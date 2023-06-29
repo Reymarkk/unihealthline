@@ -1,5 +1,7 @@
 <?php
     include_once '../pages/header.php';
+    require_once '../includes/dbh.inc.php'; //to connect in the database
+    require_once '../includes/functions.inc.php';
 ?> 
 
 <style>
@@ -73,44 +75,40 @@
     <div class="container">
         <div class="contact-left">
             <h2>Leave a Rant Message</h2>
-
-            <form action="">
+            <?php
+                if (isset($_SESSION["useruid"])) {
+                    echo "<p class='subhead' data-aos='fade-up' data-aos-delay='0'>Uy! Welcome ". $_SESSION["useruid"] . "</p>";
+                }
+                else {
+                    echo "<a href='signup.php' class='primary-cta' data-aos='fade-up' data-aos-delay='3000'>Sign up now</a>";
+                    echo "<a href='login.php' class='guest-login-cta' data-aos='zoom-out' data-aos-delay='3000'><img src='images/#' alt=''>Login</a>";
+                }
+            ?>
+            <form action="../includes/ranting.inc.php" method="POST">
                 <label for="message">Message</label>
                 <textarea name="message" id="message" cols="30" rows="10"></textarea>
 
                 
 
                 <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Your Name">
+                <input type="name" id="name" name="name" placeholder="Your Name">
 
                 <label for="email">Email</label>
-                <input type="text" id="email" name="email" placeholder="Your Email">
+                <input type="email" id="email" name="email" placeholder="Your Email">
 
-                <input type="submit" class="send-message-cta" value="Send message">
+                <button name="submit" type="submit" value="">Save Rant</button>
             </form>
         </div>
         <div class="contact-right">
 
-            <div class="comment-box">
-                <div class="box-top">
-                    <div class="Profile">
-                        <div class="profile-image">
-                            <img src="image/2.png">
-                        </div>
-                        <div class="Name">
-                            <strong>Senuda Dilwan</strong>
-                            <span>@senuda dilwan</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="comment">
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    </p>
-                </div>
-            </div>
 
+        <?php
+            $count = 0;
+            $result = showRandomRant($conn);
+            while (($row = mysqli_fetch_assoc($result)) && ($count < 3))
+            {
+                $count++;
+        ?>
             <div class="comment-box">
                 <div class="box-top">
                     <div class="Profile">
@@ -118,18 +116,20 @@
                             <img src="image/2.png">
                         </div>
                         <div class="Name">
-                            <strong>Senuda Dilwan</strong>
-                            <span>@senuda dilwan</span>
+                            <strong><?php echo $row['nameRant'];?></strong>
+                            <span><?php echo $row['emailRant'];?></span>
                         </div>
                     </div>
                 </div>
                 <div class="comment">
                     <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    <?php echo $row['messageRant'];?>
                     </p>
                 </div>
             </div>
+        <?php
+            }
+        ?>
             <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6490.42351550573!2d121.08292692557703!3d14.69964283048103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ba751aa45673%3A0xc97dd4e6435de50c!2sPUP%20Commonwealth%20Campus!5e0!3m2!1sen!2sph!4v1662042226948!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             -->
         </div>

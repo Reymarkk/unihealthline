@@ -25,7 +25,7 @@
             mysqli_stmt_close($stmt);
         }
         ?>
-        <h4>Reymarkssss Calexterio</h4>
+        <h4>Reymark Calexterio</h4>
         <p>Back-end Developer</p>
     </div>
     <div class="right">

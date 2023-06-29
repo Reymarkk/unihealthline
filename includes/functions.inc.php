@@ -155,9 +155,138 @@ function createUser($conn, $name, $email, $phonenumber, $bdate, $gender, $userna
     exit();
 }
 
+function saveRant($conn, $message, $name, $email) {
+    $sql = "INSERT INTO saverant (messageRant, nameRant, emailRant) VALUES (?, ?, ?);";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../pages/signup.php?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "sss", $message, $name, $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    header("location: ../pages/ranting.php?error=rantsaved"); // to edit, login!
+    exit();
+}
+
+/*
+function randomRant($conn, $message, $name, $email) {
+    $sql = "INSERT INTO saverant (messageRant, nameRant, emailRant) VALUES (?, ?, ?);";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../pages/signup.php?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "sss", $message, $name, $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    header("location: ../pages/ranting.php?error=rantsaved"); // to edit, login!
+    exit();
+}
+*/
+
+function randomRant($conn, $message, $name, $email) {
+    // Insert the rant message into the database
+    $sql = "INSERT INTO saverant (messageRant, nameRant, emailRant) VALUES (?, ?, ?);";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../pages/signup.php?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "sss", $message, $name, $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    // Check if 24 hours have passed since the last random selection
+    $lastSelectionTimeQuery = "SELECT selection_time FROM last_selection_time";
+    $lastSelectionTimeResult = mysqli_query($conn, $lastSelectionTimeQuery);
+    $lastSelectionTimeRow = mysqli_fetch_assoc($lastSelectionTimeResult);
+    $lastSelectionTime = strtotime($lastSelectionTimeRow['selection_time']);
+    $currentDate = strtotime(date("Y-m-d"));
+    $oneDayInSeconds = 86400; // 24 hours in seconds
+
+    if ($currentDate - $lastSelectionTime >= $oneDayInSeconds) {
+        // Count the total number of rows in the table
+        $countQuery = "SELECT COUNT(*) AS total FROM saverant";
+        $countResult = mysqli_query($conn, $countQuery);
+        $totalCount = mysqli_fetch_assoc($countResult)['total'];
+
+        // Generate two random row numbers
+        $randomRowNumbers = [];
+        while (count($randomRowNumbers) < 2) {
+            $randomNumber = rand(1, $totalCount);
+            if (!in_array($randomNumber, $randomRowNumbers)) {
+                $randomRowNumbers[] = $randomNumber;
+            }
+        }
+
+        // Select the random rows
+        $randomRowQuery = "SELECT * FROM saverant WHERE id IN (" . implode(",", $randomRowNumbers) . ")";
+        $randomRowResult = mysqli_query($conn, $randomRowQuery);
+        $randomRows = mysqli_fetch_all($randomRowResult, MYSQLI_ASSOC);
+
+        // Insert the selected random rows into the `random_rows` table
+        foreach ($randomRows as $row) {
+            $insertQuery = "INSERT INTO random_rows (messageRant, nameRant, emailRant) VALUES (?, ?, ?)";
+            $stmt = mysqli_stmt_init($conn);
+            if (mysqli_stmt_prepare($stmt, $insertQuery)) {
+                mysqli_stmt_bind_param($stmt, "sss", $row['messageRant'], $row['nameRant'], $row['emailRant']);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+            }
+        }
+
+        // Delete the previously inserted random rows from the `random_rows` table
+        $deleteQuery = "DELETE FROM random_rows";
+        mysqli_query($conn, $deleteQuery);
+
+        // Update the last selection time
+        $updateQuery = "UPDATE last_selection_time SET selection_time = NOW()";
+        mysqli_query($conn, $updateQuery);
+    }
+
+    header("location: ../pages/ranting.php?error=rantsaved"); // to edit, login!
+    exit();
+}
+
+function showRandomRant($conn) {
+    $sql = "SELECT * FROM saverant";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../pages/signup.php?error=stmtfailed/tableshowerror");
+        exit();
+    }
+    //mysqli_stmt_bind_param($stmt, "ss", $username, $email);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+    return $resultData;
+    mysqlit_stmt_close($stmt);
+}
+
+
+
+
+
 function emptyInputLogin($username, $password) {
     $result;
     if (empty($username) || empty($password)) {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+    return $result;
+}
+
+function emptyRantMessage($message, $name, $email) {
+    $result;
+    if (empty($message) || empty($name ) || empty($email)) {
         $result = true;
     }
     else {
