@@ -171,6 +171,20 @@ function saveRant($conn, $message, $name, $email) {
     exit();
 }
 
+function saveFeedback($conn, $userName, $userEmail, $userFeedback) {
+    $sql = "INSERT INTO users_feedback (usersName, usersEmail, usersFeedback) VALUES (?, ?, ?);";
+    $stmt = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: ../pages/signup.php?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "sss", $userName, $userEmail, $userFeedback);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+}
+
 /*
 function randomRant($conn, $message, $name, $email) {
     $sql = "INSERT INTO saverant (messageRant, nameRant, emailRant) VALUES (?, ?, ?);";
@@ -269,10 +283,6 @@ function showRandomRant($conn) {
     mysqlit_stmt_close($stmt);
 }
 
-
-
-
-
 function emptyInputLogin($username, $password) {
     $result;
     if (empty($username) || empty($password)) {
@@ -287,6 +297,17 @@ function emptyInputLogin($username, $password) {
 function emptyRantMessage($message, $name, $email) {
     $result;
     if (empty($message) || empty($name ) || empty($email)) {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+    return $result;
+}
+
+function emptyFeedbackMessage($userName, $userEmail, $userFeedback) {
+    $result;
+    if (empty($userName) || empty($userEmail ) || empty($userFeedback)) {
         $result = true;
     }
     else {

@@ -90,7 +90,7 @@
         <div class="contact-left">
             <h2>Contact Us</h2>
 
-            <form action="">
+            <form action="../includes/contact-us.inc.php" method="POST">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" placeholder="Your Name">
 
@@ -100,7 +100,7 @@
                 <label for="message">Message</label>
                 <textarea name="message" id="message" cols="30" rows="10"></textarea>
                 
-                <input type="submit" class="send-message-cta" value="Send message">
+                <button name="contact-us-submit" type="submit" value="">Submit</button>
             </form>
         </div>
         <div class="contact-right">

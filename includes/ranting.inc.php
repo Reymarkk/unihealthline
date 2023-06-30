@@ -10,7 +10,7 @@ if(isset($_POST["submit"])) {
     require_once 'functions.inc.php';
 
     //error handlers
-    if (emptyInputLogin($message, $name, $email) !== false) {
+    if (emptyRantMessage($message, $name, $email) !== false) {
         header("location: ../pages/login.php?error=emptyinput");
         exit();
     }
