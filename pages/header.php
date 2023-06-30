@@ -49,7 +49,7 @@
 
                 <ul class="secondary-nav">
                     <li><a href="../pages/aboutus.php">About Us</a></li> <!--shift down arrow keys to duplicate-->
-                    <li class='go-login-cta'><a href='../pages/callbutton-page.php'>Chat now</a></li>
+                    <li class='go-login-cta'><a href='../pages/support-us.php'>Support Us</a></li>
                     <?php
                     if (isset($_SESSION["useruid"])) {
                         echo "<li><a href='../pages/profile.php'>Profile</a></li>";
