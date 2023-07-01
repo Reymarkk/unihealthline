@@ -320,6 +320,7 @@ function loginUser($conn, $username, $password) {
     $uidExist = uidExists($conn, $username, $username);
 
     if ($uidExist === false) {
+
         header("location: ../pages/login.php?error=wronglogin");
         exit();
     }
@@ -328,15 +329,17 @@ function loginUser($conn, $username, $password) {
     $checkpassword = password_verify($password, $passwordHashed);
 
     if ($checkpassword === false) {
+
         header("location: ../pages/login.php?error=wronglogin");
         exit();
     }
 
     else if ($checkpassword === true) {
+        $status = "success";
         session_start();
         $_SESSION["userid"] = $uidExist["usersId"];
         $_SESSION["useruid"] = $uidExist["usersUid"]; //use this mthfker
-        $_SESSION["userstatus"] = $uidExist["usersStatus"]; // to check if admin or not
+        $_SESSION["userstatus"] = $uidExist["usersStatus"]; // to check if admin or 
         
         header("location: ../index.php");
         exit();

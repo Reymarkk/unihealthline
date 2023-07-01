@@ -1,4 +1,5 @@
 <?php
+include ('../includes/scripts.inc.php');
 
 if(isset($_POST["submit"])) {
 
@@ -10,6 +11,7 @@ if(isset($_POST["submit"])) {
 
     //error handlers
     if (emptyInputLogin($username, $password) !== false) {
+        $status = "error";
         header("location: ../pages/login.php?error=emptyinput");
         exit();
     }

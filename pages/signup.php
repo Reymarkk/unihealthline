@@ -18,13 +18,13 @@
 
             <div class="input-box">
                 <label>Email Address</label>
-                <input type="text" placeholder="Enter email address" name="email" required/>
+                <input type="email" placeholder="Enter email address" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required/>
             </div>
 
             <div class="column">
                 <div class="input-box">
                     <label>Phone</label>
-                    <input type="tel" placeholder="Enter phone number" name="phonenum" required/>
+                    <input type="tel" placeholder="Enter phone number" name="phonenum" pattern="09[0-9]{9}" required/>
                 </div>
 
                 <div class="input-box">
@@ -45,7 +45,7 @@
                         <label for="check-male">Female</label>
                     </div>
                     <div class="gender">
-                        <input type="radio" id="check-other" name="gender" value="Prefer not to say"/>
+                        <input type="radio" id="check-other" name="gender" value="Prefer not to say" required/>
                         <label for="check-male">Prefer not to say</label>
                     </div>
                 </div>

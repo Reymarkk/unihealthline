@@ -1,7 +1,7 @@
 <?php
     include_once 'pages/header.php';
 ?>
-<!-- CALL BUTTON TO AH POTANGINAMO REYMARK -->
+<!-- CALL BUTTON TO AH -->
     <!-- this call header file; makes the code shorter -->
     <a id="callbutton"></a>
     <section class="hero">

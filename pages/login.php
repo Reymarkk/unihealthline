@@ -13,17 +13,18 @@
 		<form action="../includes/login.inc.php" method="POST" class="form">
             <div class="input-box">
                     <label>Username</label>
-                    <input type="text" placeholder="Enter username/email" name="uid" value="" required/>
+                    <input type="text" placeholder="Enter username/email" name="uid" value="" />
             </div>
             <div class="input-box">
                     <label>Password</label>
-                    <input type="password" placeholder="Enter password" name="password" value="" required/>
+                    <input type="password" placeholder="Enter password" name="password" value="" />
             </div>
             <button name="submit">Login</button>
 			<p class="login-register-text"><a href="reset-password.php">Forgot your password?</a></p>
             <p class="login-register-text">Don't have an account? <a href="signup.php">Register Here</a>.</p>
         </form>
     </section>
+
     
 </body>
 </html>
