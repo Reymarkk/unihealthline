@@ -11,7 +11,7 @@ if(isset($_POST["submit"])) {
 
     //error handlers
     if (emptyInputLogin($username, $password) !== false) {
-        $status = "error";
+        status();
         header("location: ../pages/login.php?error=emptyinput");
         exit();
     }
